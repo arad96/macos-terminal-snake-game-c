@@ -166,8 +166,8 @@ void logic() {
         
         // TODO: Make sure not to generate fruit on snake 
         // After eating the above fruit generate new fruit
-        fruitx = rand() % (width - 2) + 1;   // semi random int between 1, width -2
-        fruity = rand() % (height - 2) + 1;   
+        fruitx = rand() % (height - 1) + 1;  // generate fruit x,y so always inside boarders 
+        fruity = rand() % (width - 1) + 1;
         nTail++;
         score += 10; 
     } 
