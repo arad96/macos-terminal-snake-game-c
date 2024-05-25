@@ -100,7 +100,7 @@ void input()
 // Function for the logic behind each movement 
 void logic() 
 { 
-    sleep((double)0.05); 
+    usleep(100000); // Sleep for 100000 microseconds (100 milliseconds) 
     switch (flag) { 
         case 1: 
             y--; 
@@ -118,28 +118,25 @@ void logic()
             break; 
     } 
   
+    // TODO: Logic for self colision
     // If the game is over (subtract 2 bc boarders)
     if (x < 1 || x > height - 2 || y < 1 || y > width - 2){
         gameover = 1;
         printw("Boundary hit: GAME OVER");
         printw("\n");
         refresh();
-        sleep((double)1.5);
+        sleep(1);
     } 
          
     // If snake reaches the fruit then update the score 
-    if (x == fruitx && y == fruity) { 
-        label3: 
-            fruitx = rand() % 18 + 1;   // semi random int between 1, 18
-            if (fruitx == 0) 
-                goto label3; 
-    
-        // After eating the above fruit generate new fruit 
-        label4: 
-            fruity = rand() % 18 + 1;   
-            if (fruity == 0) 
-                goto label4; 
-            score += 10; 
+    if (x == fruitx && y == fruity) {  
+        
+        // After eating the above fruit generate new fruit
+        fruitx = rand() % 18 + 1;   // semi random int between 1, 18
+        fruity = rand() % 18 + 1;   
+
+        score += 10;
+        // TODO: Add to snake length 
     } 
 }
 
@@ -147,11 +144,12 @@ void logic()
 // Driver Code 
 int main() 
 { 
-    // init screen, Enable keypad mode, unbuffer input 
-    initscr();
-    keypad(stdscr, TRUE);   
-    cbreak();
-    noecho();
+    // init screen, Enable keypad mode, unbuffer input   
+    initscr();          // Start curses mode
+    cbreak();           // Line buffering disabled
+    noecho();           // Don't echo() while we do getch
+    nodelay(stdscr, TRUE); // Non-blocking input
+    keypad(stdscr, TRUE); 
 
     // Generate boundary 
     setup(); 
