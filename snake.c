@@ -61,12 +61,12 @@ void draw() {
     } 
   
     // Print the score after the game ends 
-    printw("score = %d", score); 
+    printw("Score = %d", score); 
     printw("\n"); 
     printw("press X to quit the game");
     printw("\n");
     refresh();
-    usleep(350000);     // Sleep for 300000 microseconds (100 milliseconds) 
+    usleep(350000);     // Sleep for x microseconds 
 }
 
 
@@ -175,8 +175,7 @@ void logic() {
 
 
 // Driver Code 
-int main() 
-{ 
+int main() { 
     // init screen, Enable keypad mode, unbuffer input   
     initscr();              // Start curses mode
     cbreak();               // Line buffering disabled
