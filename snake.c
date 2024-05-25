@@ -6,7 +6,11 @@
   
 int i, j, height = 20, width = 20; 
 int gameover, score; 
-int x, y, fruitx, fruity, flag;
+int x, y;                       // current position
+int tailX[100], tailY[100];     // memory for all tail segments 
+int fruitx, fruity;             // fruit position
+int nTail = 0;                    
+int flag;                       // direction flag
 char ch; 
   
 // Function to generate the fruit within the boundary 
@@ -18,6 +22,7 @@ void setup()
     x = height / 2; 
     y = width / 2;
 
+// TODO: Get Rid of goto's 
 label1: 
     fruitx = rand() % 20; 
     if (fruitx == 0) 
@@ -31,8 +36,8 @@ label2:
 
 
 // Function to draw the boundaries 
-void draw() 
-{ 
+void draw() { 
+    
     wclear(stdscr); // used to render the graphics clear window
     for (i = 0; i < height; i++) { 
         for (j = 0; j < width; j++) { 
@@ -47,6 +52,11 @@ void draw()
                         printw("*");
                 } 
                 else{
+                    // Fix drawing bug
+                    for(int k = 0; k < nTail; k++){
+                        if(tailX[k] == j && tailY[k] == i)
+                            printw("o");
+                    }
                     printw(" ");
                 }      
             } 
@@ -59,13 +69,14 @@ void draw()
     printw("\n"); 
     printw("press X to quit the game");
     printw("\n");
+    usleep(300000);     // Sleep for 300000 microseconds (100 milliseconds) 
     refresh();
 }
 
 
 // Function to take the input 
-void input() 
-{ 
+void input() { 
+    
     // Get the keyboard input
     int ch = getch();
 
@@ -98,9 +109,22 @@ void input()
   
 
 // Function for the logic behind each movement 
-void logic() 
-{ 
-    usleep(100000); // Sleep for 100000 microseconds (100 milliseconds) 
+void logic() {
+    int prevX = tailX[0];          
+    int prevY = tailY[0];
+    int prev2X, prev2Y;           
+    tailX[0] = x;
+    tailY[0] = y;
+
+    for (int ix = 1; ix < nTail; ix++) {
+        prev2X = tailX[ix];
+        prev2Y = tailY[ix];
+        tailX[ix] = prevX;
+        tailY[ix] = prevY;
+        prevX = prev2X;
+        prevY = prev2Y;
+    }
+    
     switch (flag) { 
         case 1: 
             y--; 
@@ -134,9 +158,8 @@ void logic()
         // After eating the above fruit generate new fruit
         fruitx = rand() % 18 + 1;   // semi random int between 1, 18
         fruity = rand() % 18 + 1;   
-
-        score += 10;
-        // TODO: Add to snake length 
+        nTail++;
+        score += 10; 
     } 
 }
 
