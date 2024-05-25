@@ -3,55 +3,61 @@
 #include <stdlib.h> 
 #include <unistd.h>
 #include <ncurses.h>
+#include <time.h>
   
 int i, j, height = 20, width = 20; 
 int gameover, score; 
-int x, y, fruitx, fruity, flag;
+int x, y;                       // current position
+int tailX[100], tailY[100];     // memory for all tail segments 
+int fruitx, fruity;             // fruit position
+int nTail = 1;                    
+int flag;                       // direction flag
 char ch; 
   
 // Function to generate the fruit within the boundary 
-void setup() 
-{ 
+void setup() { 
     gameover = 0; 
-  
-    // Stores height and width 
     x = height / 2; 
     y = width / 2;
 
-label1: 
-    fruitx = rand() % 20; 
-    if (fruitx == 0) 
-        goto label1; 
-label2: 
-    fruity = rand() % 20; 
-    if (fruity == 0) 
-        goto label2; 
+    srand(time(0));  // Seed the random number generator
+    fruitx = rand() % (height - 1) + 1;  // generate fruit x,y so always inside boarders 
+    fruity = rand() % (width - 1) + 1; 
+
     score = 0; 
 } 
 
 
 // Function to draw the boundaries 
-void draw() 
-{ 
+void draw() { 
+    
     wclear(stdscr); // used to render the graphics clear window
-    for (i = 0; i < height; i++) { 
-        for (j = 0; j < width; j++) { 
-            if (i == 0 || i == width - 1 || j == 0 || j == height - 1) { 
-                printw("#"); 
+    for (i = 0; i <= height; i++) { 
+        for (j = 0; j <= width; j++) { 
+            if (i == 0 || i == height || j == 0 || j == width) { 
+                printw("#");
             } 
-            else { 
-                if (i == x && j == y){
+            else if (i == x && j == y){
                     printw("0");
                 }   
-                else if (i == fruitx && j == fruity){
+            else if (i == fruitx && j == fruity){
                         printw("*");
                 } 
-                else{
+            else {
+                // Fix drawing bug
+                int print = 0;
+                for(int k = 0; k < nTail; k++){
+                    if(tailX[k] == i && tailY[k] == j){
+                        printw("o");
+                        print = 1;
+                    }        
+                }
+                if (! print){
                     printw(" ");
-                }      
-            } 
+                }
+            }        
         } 
-        printw("\n"); 
+        printw("\n");
     } 
   
     // Print the score after the game ends 
@@ -60,15 +66,24 @@ void draw()
     printw("press X to quit the game");
     printw("\n");
     refresh();
+    usleep(350000);     // Sleep for 300000 microseconds (100 milliseconds) 
 }
 
 
 // Function to take the input 
-void input() 
-{ 
+void input() { 
+    
     // Get the keyboard input
     int ch = getch();
 
+    // case 97: Handles the 'a' key press.
+    // case 115: Handles the 's' key press.
+    // case 100: Handles the 'd' key press.
+    // case 119: Handles the 'w' key press.
+    // case 120: Handles the 'x' key press.
+    
+    // ch = 119;
+    
     // Check if a key was pressed
     if (ch != ERR) {
         
@@ -76,32 +91,38 @@ void input()
         int key = ch & 0xFF;
 
         // Check if the key pressed was a special key, such as an wasd key
-        switch (ch) { 
-            case 'a': 
+        switch (key) { 
+            case 'a': // left
                 flag = 1; 
                 break; 
-            case 's': 
+            case 's': // down
                 flag = 2; 
                 break; 
-            case 'd': 
+            case 'd': // right
                 flag = 3; 
                 break; 
-            case 'w': 
+            case 'w': // up
                 flag = 4; 
                 break; 
             case 'x': 
                 gameover = 1; 
                 break; 
         } 
-  }
+    }
 } 
   
 
 // Function for the logic behind each movement 
-void logic() 
-{ 
-    usleep(100000); // Sleep for 100000 microseconds (100 milliseconds) 
-    switch (flag) { 
+void logic() {
+    
+    int prevX = tailX[0];          
+    int prevY = tailY[0];
+    int prev2X, prev2Y;
+
+    switch (flag) {
+        // x goes up and down
+        // y goes left and right 
+        // ik its backwards im dyslexic   
         case 1: 
             y--; 
             break; 
@@ -117,10 +138,22 @@ void logic()
         default: 
             break; 
     } 
+           
+    tailX[0] = x;
+    tailY[0] = y;
+
+    for (int ix = 1; ix <= nTail; ix++) {
+        prev2X = tailX[ix];
+        prev2Y = tailY[ix];
+        tailX[ix] = prevX;
+        tailY[ix] = prevY;
+        prevX = prev2X;
+        prevY = prev2Y;
+    }
   
     // TODO: Logic for self colision
-    // If the game is over (subtract 2 bc boarders)
-    if (x < 1 || x > height - 2 || y < 1 || y > width - 2){
+    // If the game is over (subtract 1 bc boarders)
+    if (x < 1 || x > height - 1 || y < 1 || y > width - 1){
         gameover = 1;
         printw("Boundary hit: GAME OVER");
         printw("\n");
@@ -131,12 +164,12 @@ void logic()
     // If snake reaches the fruit then update the score 
     if (x == fruitx && y == fruity) {  
         
+        // TODO: Make sure not to generate fruit on snake 
         // After eating the above fruit generate new fruit
-        fruitx = rand() % 18 + 1;   // semi random int between 1, 18
-        fruity = rand() % 18 + 1;   
-
-        score += 10;
-        // TODO: Add to snake length 
+        fruitx = rand() % (height - 1) + 1;  // generate fruit x,y so always inside boarders 
+        fruity = rand() % (width - 1) + 1;
+        nTail++;
+        score += 10; 
     } 
 }
 
@@ -145,10 +178,10 @@ void logic()
 int main() 
 { 
     // init screen, Enable keypad mode, unbuffer input   
-    initscr();          // Start curses mode
-    cbreak();           // Line buffering disabled
-    noecho();           // Don't echo() while we do getch
-    nodelay(stdscr, TRUE); // Non-blocking input
+    initscr();              // Start curses mode
+    cbreak();               // Line buffering disabled
+    noecho();               // Don't echo() while we do getch
+    nodelay(stdscr, TRUE);  // Non-blocking input
     keypad(stdscr, TRUE); 
 
     // Generate boundary 
@@ -163,6 +196,8 @@ int main()
 
     // Disable keypad mode End curses mode
     keypad(stdscr, FALSE); 
-    endwin();			   
+    endwin();
+
 return 0;
+
 } 
