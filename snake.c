@@ -118,6 +118,7 @@ void logic()
             break; 
     } 
   
+    // TODO: Logic for self colision
     // If the game is over (subtract 2 bc boarders)
     if (x < 1 || x > height - 2 || y < 1 || y > width - 2){
         gameover = 1;
@@ -128,18 +129,14 @@ void logic()
     } 
          
     // If snake reaches the fruit then update the score 
-    if (x == fruitx && y == fruity) { 
-        label3: 
-            fruitx = rand() % 18 + 1;   // semi random int between 1, 18
-            if (fruitx == 0) 
-                goto label3; 
-    
-        // After eating the above fruit generate new fruit 
-        label4: 
-            fruity = rand() % 18 + 1;   
-            if (fruity == 0) 
-                goto label4; 
-            score += 10; 
+    if (x == fruitx && y == fruity) {  
+        
+        // After eating the above fruit generate new fruit
+        fruitx = rand() % 18 + 1;   // semi random int between 1, 18
+        fruity = rand() % 18 + 1;   
+
+        score += 10;
+        // TODO: Add to snake length 
     } 
 }
 
