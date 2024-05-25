@@ -19,4 +19,8 @@ run this command in the directory that contains the 'snake.c' file
 1. **Compile the Source Code**:
    ```bash
    gcc -lncurses snake.c -o snake_game
-    
+
+2. **Run the executable**:
+   ```bash
+   ./snake_game
+      
