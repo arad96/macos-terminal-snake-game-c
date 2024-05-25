@@ -2,3 +2,4 @@ snake_game
 .vscode/
 snake
 snake.dSYM/
+.DS_Store
