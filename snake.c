@@ -100,7 +100,7 @@ void input()
 // Function for the logic behind each movement 
 void logic() 
 { 
-    sleep((double)0.05); 
+    usleep(100000); // Sleep for 100000 microseconds (100 milliseconds) 
     switch (flag) { 
         case 1: 
             y--; 
@@ -124,7 +124,7 @@ void logic()
         printw("Boundary hit: GAME OVER");
         printw("\n");
         refresh();
-        sleep((double)1.5);
+        sleep(1);
     } 
          
     // If snake reaches the fruit then update the score 
@@ -147,11 +147,12 @@ void logic()
 // Driver Code 
 int main() 
 { 
-    // init screen, Enable keypad mode, unbuffer input 
-    initscr();
-    keypad(stdscr, TRUE);   
-    cbreak();
-    noecho();
+    // init screen, Enable keypad mode, unbuffer input   
+    initscr();          // Start curses mode
+    cbreak();           // Line buffering disabled
+    noecho();           // Don't echo() while we do getch
+    nodelay(stdscr, TRUE); // Non-blocking input
+    keypad(stdscr, TRUE); 
 
     // Generate boundary 
     setup(); 

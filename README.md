@@ -9,9 +9,9 @@ I am running the c program on a mac.
 - [How to get c on a Mac](https://www.cs.auckland.ac.nz/~paul/C/Mac/):
 
 - [How to get I/O working on Mac](http://jbwyatt.com/ncurses.html): 
-    For some reason every online tutorial for c snake game uses conio.h as the libary for
+    For some reason every online tutorial for c snake game uses conio.h as the library for
     consol I/O. Conio does not work on Mac OS.
-    [Explaination](https://stackoverflow.com/a/67320678/22211726)
+    [Explanation](https://stackoverflow.com/a/67320678/22211726)
 
 ## How to Compile the Code and Play the Game
 Since I am using the curses library I need to link the curses.h functions at compile time.
