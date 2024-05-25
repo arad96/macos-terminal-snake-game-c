@@ -5,7 +5,7 @@
 #include <ncurses.h>
 #include <time.h>
   
-int i, j, height = 10, width = 10; 
+int i, j, height = 20, width = 20; 
 int gameover, score; 
 int x, y;                       // current position
 int tailX[100], tailY[100];     // memory for all tail segments 
@@ -66,7 +66,7 @@ void draw() {
     printw("press X to quit the game");
     printw("\n");
     refresh();
-    usleep(450000);     // Sleep for 300000 microseconds (100 milliseconds) 
+    usleep(350000);     // Sleep for 300000 microseconds (100 milliseconds) 
 }
 
 
@@ -164,6 +164,7 @@ void logic() {
     // If snake reaches the fruit then update the score 
     if (x == fruitx && y == fruity) {  
         
+        // TODO: Make sure not to generate fruit on snake 
         // After eating the above fruit generate new fruit
         fruitx = rand() % (width - 2) + 1;   // semi random int between 1, width -2
         fruity = rand() % (height - 2) + 1;   
