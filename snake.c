@@ -21,10 +21,13 @@ void setup() {
     y = width / 2;
 
     srand(time(0));  // Seed the random number generator
-    fruitx = rand() % (height - 1) + 1;  // generate fruit x,y so always inside boarders 
-    fruity = rand() % (width - 1) + 1; 
+    do {
+        fruitx = rand() % (height - 1) + 1;  // generate fruit x,y so always inside boarders 
+        fruity = rand() % (width - 1) + 1;   // and not on snakes head
+    } while (fruitx == x && fruity == y);
 
     score = 0; 
+
 } 
 
 
@@ -41,10 +44,9 @@ void draw() {
                     printw("0");
                 }   
             else if (i == fruitx && j == fruity){
-                        printw("*");
+                    printw("*");
                 } 
             else {
-                // Fix drawing bug
                 int print = 0;
                 for(int k = 0; k < nTail; k++){
                     if(tailX[k] == i && tailY[k] == j){
@@ -63,10 +65,10 @@ void draw() {
     // Print the score after the game ends 
     printw("Score = %d", score); 
     printw("\n"); 
-    printw("press X to quit the game");
+    printw("press X to quit the game"); 
     printw("\n");
+    usleep(350000);     // Sleep for x microseconds
     refresh();
-    usleep(350000);     // Sleep for x microseconds 
 }
 
 
@@ -92,16 +94,16 @@ void input() {
 
         // Check if the key pressed was a special key, such as an wasd key
         switch (key) { 
-            case 'a': // left
+            case 'a':       // left
                 flag = 1; 
                 break; 
-            case 's': // down
+            case 's':       // down
                 flag = 2; 
                 break; 
-            case 'd': // right
+            case 'd':       // right
                 flag = 3; 
                 break; 
-            case 'w': // up
+            case 'w':       // up
                 flag = 4; 
                 break; 
             case 'x': 
@@ -115,34 +117,38 @@ void input() {
 // Function for the logic behind each movement 
 void logic() {
     
+    // store head from previous iteration 
     int prevX = tailX[0];          
     int prevY = tailY[0];
     int prev2X, prev2Y;
 
+    // update x, y based on input direction wasd
     switch (flag) {
         // x goes up and down
         // y goes left and right 
         // ik its backwards im dyslexic   
         case 1: 
-            y--; 
+            y--;    // Move left
             break; 
         case 2: 
-            x++; 
+            x++;    // Move down
             break; 
         case 3: 
-            y++; 
+            y++;    // Move right
             break; 
         case 4: 
-            x--; 
+            x--;    // Move up
             break; 
         default: 
             break; 
     } 
-           
+
+    // Update the position of the head in the tail arrays   
     tailX[0] = x;
     tailY[0] = y;
 
-    for (int ix = 1; ix <= nTail; ix++) {
+    // update position of tail segments
+    for (int ix = 1; ix < nTail; ix++) {
         prev2X = tailX[ix];
         prev2Y = tailY[ix];
         tailX[ix] = prevX;
@@ -151,31 +157,56 @@ void logic() {
         prevY = prev2Y;
     }
   
-    // TODO: Logic for self colision
-    // If the game is over (subtract 1 bc boarders)
-    if (x < 1 || x > height - 1 || y < 1 || y > width - 1){
+    // check boarder collision
+    if (x < 1 || x > height - 1 || y < 1 || y > width - 1){ // (subtract 1 bc boarders)
         gameover = 1;
         printw("Boundary hit: GAME OVER");
         printw("\n");
         refresh();
-        sleep(1);
-    } 
-         
-    // If snake reaches the fruit then update the score 
+        sleep(2);
+        return;
+    }
+
+    // check self collision
+    for(int k = 1; k < nTail; k++){
+        if(tailX[k] == x && tailY[k] == y){
+            gameover = 1;
+            printw("Self hit: GAME OVER");
+            printw("\n");
+            refresh();
+            sleep(3);
+            return;
+        }
+    }
+
+    // check for fruit collision  
     if (x == fruitx && y == fruity) {  
         
-        // TODO: Make sure not to generate fruit on snake 
+        int fruit_on_snake;
+
         // After eating the above fruit generate new fruit
-        fruitx = rand() % (height - 1) + 1;  // generate fruit x,y so always inside boarders 
-        fruity = rand() % (width - 1) + 1;
+        do {
+            fruit_on_snake = 0;
+            fruitx = rand() % (height - 1) + 1;  // generate fruit x,y so always inside boarders and non occupied spot 
+            fruity = rand() % (width - 1) + 1;
+            for(int k = 0; k < nTail; k++){
+                if(tailX[k] == fruitx && tailY[k] == fruity){
+                    fruit_on_snake = 1;
+                    // printw("Fruit on Snake"); printw("\n");refresh();
+                }        
+            }
+        } while (fruit_on_snake);
+
         nTail++;
-        score += 10; 
+        score += 10;
+
     } 
 }
 
 
 // Driver Code 
 int main() { 
+    
     // init screen, Enable keypad mode, unbuffer input   
     initscr();              // Start curses mode
     cbreak();               // Line buffering disabled
