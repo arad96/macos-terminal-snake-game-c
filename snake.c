@@ -1,9 +1,19 @@
+// ALF : arad96/macos-terminal-snake-game-c
 // C program to build the complete snake game   
 #include <stdio.h> 
 #include <stdlib.h> 
 #include <unistd.h>
 #include <ncurses.h>
 #include <time.h>
+
+// TODO: Implement a hard mode where the game speeds up as the tail gets longer
+
+// TODO: Fix Dyslexia is a weak excuse... Recommend r for rows and c for cols 
+        // (or even better, use 3-letter variable names)... Using generic i and j (and k) WILL get you in trouble one day. 
+        // Especially if those variables are not scoped to be extremely local... – 
+        // Fe2O3
+        
+// TODO: Once game over condition is hit give user option to play again.
   
 int i, j, height = 20, width = 20; 
 int gameover, score; 
