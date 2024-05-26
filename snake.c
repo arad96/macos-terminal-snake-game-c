@@ -34,27 +34,35 @@ void setup() {
 // Function to draw the boundaries 
 void draw() { 
     
-    wclear(stdscr); // used to render the graphics clear window
+    wclear(stdscr);     // clear window
+
+    // print game board
     for (i = 0; i <= height; i++) { 
         for (j = 0; j <= width; j++) { 
-            if (i == 0 || i == height || j == 0 || j == width) { 
+            if (i == 0 || i == height || j == 0 || j == width) {
+                // draw boarder 
                 printw("#");
             } 
             else if (i == x && j == y){
+                    // draw head
                     printw("0");
                 }   
             else if (i == fruitx && j == fruity){
+                    // draw fruit
                     printw("*");
                 } 
             else {
+                // check to see if cell is occupied by tail
                 int print = 0;
                 for(int k = 0; k < nTail; k++){
                     if(tailX[k] == i && tailY[k] == j){
+                        // draw tail segments
                         printw("o");
                         print = 1;
                     }        
                 }
                 if (! print){
+                    // not occupied
                     printw(" ");
                 }
             }        
@@ -68,7 +76,7 @@ void draw() {
     printw("press X to quit the game"); 
     printw("\n");
     usleep(350000);     // Sleep for x microseconds
-    refresh();
+    refresh();          // render graphics
 }
 
 
@@ -83,8 +91,6 @@ void input() {
     // case 100: Handles the 'd' key press.
     // case 119: Handles the 'w' key press.
     // case 120: Handles the 'x' key press.
-    
-    // ch = 119;
     
     // Check if a key was pressed
     if (ch != ERR) {
@@ -184,7 +190,7 @@ void logic() {
         
         int fruit_on_snake;
 
-        // After eating the above fruit generate new fruit
+        // After eating the above fruit generate new fruit on non occupied space
         do {
             fruit_on_snake = 0;
             fruitx = rand() % (height - 1) + 1;  // generate fruit x,y so always inside boarders and non occupied spot 
