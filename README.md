@@ -1,8 +1,10 @@
-# snake-c
+# macos-terminal-snake-game-c
+
 I am making a simple terminal based snake game in c! just a bit of fun.
 I was bored and wanted to relax and exercise my mind a little instead of
-doing the usual. 
-I am running the c program on a mac. 
+doing the usual dumb stuff.
+
+I am running the c program on macos. 
 
 ## Useful Links
 
@@ -16,6 +18,7 @@ I am running the c program on a mac.
 ## How to Compile the Code and Play the Game
 Since I am using the curses library I need to link the curses.h functions at compile time.
 run this command in the directory that contains the 'snake.c' file
+
 1. **Compile the Source Code**:
    ```bash
    gcc -lncurses snake.c -o snake_game
