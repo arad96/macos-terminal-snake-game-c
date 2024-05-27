@@ -83,6 +83,8 @@ void draw() {
     printw("press X to quit the game"); 
     printw("\n");
     refresh();          // render graphics
+
+    // TODO: use protable sleep function
     usleep(300000);     // Sleep for x microseconds
 }
 
