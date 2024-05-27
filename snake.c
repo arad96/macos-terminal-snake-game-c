@@ -7,15 +7,11 @@
 #include <time.h>
 
 // TODO: Implement a hard mode where the game speeds up as the tail gets longer
-
 // TODO: Fix Dyslexia is a weak excuse... Recommend r for rows and c for cols 
         // (or even better, use 3-letter variable names)... Using generic i and j (and k) WILL get you in trouble one day. 
         // Especially if those variables are not scoped to be extremely local... – Fe2O3
-        
 // TODO: Once game over condition is hit give user option to play again.
-
-// TODO: ability to do profile monitoring, performance monitoring,
-
+// TODO: ability to do profile monitoring, performance monitoring
 // TODO: add ability to keep a high score
 
 int i, j, height = 20, width = 20; 
@@ -47,7 +43,8 @@ void setup() {
 // Function to draw the boundaries 
 void draw() { 
     
-    wclear(stdscr);     // clear window
+    // wclear(stdscr);     // clear window
+    werase(stdscr);
 
     // print game board
     for (i = 0; i <= height; i++) { 
