@@ -88,8 +88,8 @@ void draw() {
     printw("\n"); 
     printw("press X to quit the game"); 
     printw("\n");
-    usleep(350000);     // Sleep for x microseconds
     refresh();          // render graphics
+    usleep(300000);     // Sleep for x microseconds
 }
 
 
