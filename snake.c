@@ -7,9 +7,6 @@
 #include <time.h>
 
 // TODO: Implement a hard mode where the game speeds up as the tail gets longer
-// TODO: Fix Dyslexia is a weak excuse... Recommend r for rows and c for cols 
-        // (or even better, use 3-letter variable names)... Using generic i and j (and k) WILL get you in trouble one day. 
-        // Especially if those variables are not scoped to be extremely local... – Fe2O3
 // TODO: Once game over condition is hit give user option to play again.
 // TODO: ability to do profile monitoring, performance monitoring
 // TODO: add ability to keep a high score
@@ -53,11 +50,11 @@ void draw() {
                 // draw boarder 
                 printw("#");
             } 
-            else if (row == x && col == y){
+            else if (col == x && row == y){
                     // draw head
                     printw("0");
                 }   
-            else if (row == fruitx && col == fruity){
+            else if (col == fruitx && row == fruity){
                     // draw fruit
                     printw("*");
                 } 
@@ -65,7 +62,7 @@ void draw() {
                 // check to see if cell is occupied by tail
                 int print = 0;
                 for(int k = 0; k < nTail; k++){
-                    if(tailX[k] == row && tailY[k] == col){
+                    if(tailX[k] == col && tailY[k] == row){
                         // draw tail segments
                         printw("o");
                         print = 1;
@@ -144,16 +141,16 @@ void logic() {
         // y goes left and right 
         // ik its backwards im dyslexic   
         case 1: 
-            y--;    // Move left
+            x--;    // Move left
             break; 
         case 2: 
-            x++;    // Move down
+            y++;    // Move down
             break; 
         case 3: 
-            y++;    // Move right
+            x++;    // Move right
             break; 
         case 4: 
-            x--;    // Move up
+            y--;    // Move up
             break; 
         default: 
             break; 
@@ -174,7 +171,7 @@ void logic() {
     }
   
     // check boarder collision
-    if (x < 1 || x > height - 1 || y < 1 || y > width - 1){ // (subtract 1 bc boarders)
+    if (x < 1 || x > width - 1 || y < 1 || y > height - 1){ // (subtract 1 bc boarders)
         gameover = 1;
         printw("Boundary hit: GAME OVER");
         printw("\n");
@@ -203,8 +200,8 @@ void logic() {
         // After eating the above fruit generate new fruit on non occupied space
         do {
             fruit_on_snake = 0;
-            fruitx = rand() % (height - 1) + 1;  // generate fruit x,y so always inside boarders and non occupied spot 
-            fruity = rand() % (width - 1) + 1;
+            fruitx = rand() % (width - 1) + 1;  // generate fruit x,y so always inside boarders and non occupied spot 
+            fruity = rand() % (height - 1) + 1;
             for(int k = 0; k < nTail; k++){
                 if(tailX[k] == fruitx && tailY[k] == fruity){
                     fruit_on_snake = 1;
