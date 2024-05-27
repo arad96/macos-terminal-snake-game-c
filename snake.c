@@ -14,7 +14,7 @@
 // TODO: ability to do profile monitoring, performance monitoring
 // TODO: add ability to keep a high score
 
-int i, j, height = 20, width = 20; 
+int row, col, height = 20, width = 20; 
 int gameover, score; 
 int x, y;                       // current position
 int tailX[100], tailY[100];     // memory for all tail segments 
@@ -47,17 +47,17 @@ void draw() {
     werase(stdscr);
 
     // print game board
-    for (i = 0; i <= height; i++) { 
-        for (j = 0; j <= width; j++) { 
-            if (i == 0 || i == height || j == 0 || j == width) {
+    for (row = 0; row <= height; row++) { 
+        for (col = 0; col <= width; col++) { 
+            if (row == 0 || row == height || col == 0 || col == width) {
                 // draw boarder 
                 printw("#");
             } 
-            else if (i == x && j == y){
+            else if (row == x && col == y){
                     // draw head
                     printw("0");
                 }   
-            else if (i == fruitx && j == fruity){
+            else if (row == fruitx && col == fruity){
                     // draw fruit
                     printw("*");
                 } 
@@ -65,7 +65,7 @@ void draw() {
                 // check to see if cell is occupied by tail
                 int print = 0;
                 for(int k = 0; k < nTail; k++){
-                    if(tailX[k] == i && tailY[k] == j){
+                    if(tailX[k] == row && tailY[k] == col){
                         // draw tail segments
                         printw("o");
                         print = 1;
