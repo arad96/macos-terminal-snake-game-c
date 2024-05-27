@@ -23,13 +23,13 @@ char ch;
 // Function to generate the fruit within the boundary 
 void setup() { 
     gameover = 0; 
-    x = height / 2; 
-    y = width / 2;
+    x = width / 2; 
+    y = height / 2;
 
     srand(time(0));  // Seed the random number generator
     do {
-        fruitx = rand() % (height - 1) + 1;  // generate fruit x,y so always inside boarders 
-        fruity = rand() % (width - 1) + 1;   // and not on snakes head
+        fruitx = rand() % (width - 1) + 1;  // generate fruit x,y so always inside boarders 
+        fruity = rand() % (height - 1) + 1;   // and not on snakes head
     } while (fruitx == x && fruity == y);
 
     score = 0; 
