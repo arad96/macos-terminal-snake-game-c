@@ -19,7 +19,8 @@ int fruitx, fruity;             // fruit position
 int nTail = 1;                    
 int flag;                       // direction flag
 char ch; 
-  
+
+
 // Function to generate the fruit within the boundary 
 void setup() { 
     gameover = 0; 
@@ -83,7 +84,7 @@ void draw() {
     printw("press X to quit the game"); 
     printw("\n");
     refresh();          // render graphics
-    usleep(300000);     // Sleep for x microseconds
+
 }
 
 
@@ -226,6 +227,7 @@ int main() {
     noecho();               // Don't echo() while we do getch
     nodelay(stdscr, TRUE);  // Non-blocking input
     keypad(stdscr, TRUE); 
+    timeout(300);           // Set getch to wait x ms for input
 
     // Generate boundary 
     setup(); 
