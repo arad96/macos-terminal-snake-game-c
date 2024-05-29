@@ -128,9 +128,14 @@ void input() {
 } 
   
 
-// Function for the logic behind each movement 
-void logic() {
+void update_head_position(){
+    // Update the position of the head in the tail arrays   
+    tailX[0] = x;
+    tailY[0] = y;
+}
 
+void check_score_limit(){
+    // check if score limit reached
     if (nTail - 1 == 100){
         gameover = 1;
         printw("CongratulationS! You Ate %d Fruits!: !!YOU WIN!! :)", score / 10); 
@@ -139,12 +144,20 @@ void logic() {
         sleep(4);
         return;
     }
-    
+}
+
+
+
+// Function for the logic behind each movement 
+void logic() {
+
     // store head from previous iteration 
     int prevX = tailX[0];          
     int prevY = tailY[0];
     int prev2X, prev2Y;
 
+    check_score_limit();
+    
     // update x, y based on input direction wasd
     switch (flag) {   
         case 1: 
@@ -163,9 +176,7 @@ void logic() {
             break; 
     } 
 
-    // Update the position of the head in the tail arrays   
-    tailX[0] = x;
-    tailY[0] = y;
+    update_head_position();
 
     // update position of tail segments
     for (int ix = 1; ix < nTail; ix++) {
