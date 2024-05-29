@@ -134,6 +134,7 @@ void update_head_position(){
     tailY[0] = y;
 }
 
+
 void check_score_limit(){
     // check if score limit reached
     if (nTail - 1 == 100){
@@ -145,7 +146,6 @@ void check_score_limit(){
         return;
     }
 }
-
 
 
 // Function for the logic behind each movement 
