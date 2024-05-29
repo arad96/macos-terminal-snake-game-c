@@ -131,7 +131,7 @@ void input() {
 // Function for the logic behind each movement 
 void logic() {
 
-    if (nTail - 1 == 5){
+    if (nTail - 1 == 100){
         gameover = 1;
         printw("CongratulationS! You Ate %d Fruits!: !!YOU WIN!! :)", score / 10); 
         printw("\n");
