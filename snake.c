@@ -137,10 +137,7 @@ void logic() {
     int prev2X, prev2Y;
 
     // update x, y based on input direction wasd
-    switch (flag) {
-        // x goes up and down
-        // y goes left and right 
-        // ik its backwards im dyslexic   
+    switch (flag) {   
         case 1: 
             x--;    // Move left
             break; 
