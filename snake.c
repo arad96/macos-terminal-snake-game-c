@@ -130,6 +130,15 @@ void input() {
 
 // Function for the logic behind each movement 
 void logic() {
+
+    if (nTail - 1 == 5){
+        gameover = 1;
+        printw("CongratulationS! You Ate %d Fruits!: !!YOU WIN!! :)", score / 10); 
+        printw("\n");
+        refresh();
+        sleep(4);
+        return;
+    }
     
     // store head from previous iteration 
     int prevX = tailX[0];          
